@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Text, View, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { DataContext } from '../App';
 import { AntDesign } from '@expo/vector-icons';
+import Loader from '../components/Loader';
 
 
 
@@ -12,11 +13,11 @@ export default function Home(){
 
     return(
       <View style={styles.listContainer}>
-        {loading && <Text>Loading...</Text>}
+        {loading && <Loader/>}
 
         {error && <Text>Error Loading Data</Text>}
 
-        {pokemonData !== undefined && (
+        {pokemonData && (
           <FlatList 
           style={styles.list}
           keyExtractor={(item => item.id)}
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
 
   name:{
     alignSelf:'center',
-    marginLeft: 10,
+    marginLeft: 20,
     color:'#00246B',
     fontFamily: 'nunito-bold',
     fontSize: 18,
