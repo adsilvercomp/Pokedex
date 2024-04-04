@@ -12,6 +12,7 @@ export default function App(){
   const [pokemonData, setPokemonData] = useState(null)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  
   // code to fetch data
   const getInitialData = async (url) => {
     const response = await fetch(url)

@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Text, View, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { DataContext } from '../App';
+import { AntDesign } from '@expo/vector-icons';
+
 
 
 export default function Home(){
   
   const {pokemonData, loading, error} = useContext(DataContext)
 
-    useEffect(() => {
-      console.log('testing123')
-      console.log(pokemonData);
-    },[])
 
     return(
       <View style={styles.listContainer}>
@@ -26,7 +24,10 @@ export default function Home(){
           renderItem={({item}) => (
               <TouchableOpacity style={styles.listItem}>
                 <Image style={styles.image} source={{ uri: item.sprite }}/>
-                <Text>{item.name}</Text>
+                <Text style={styles.name}>{item.name}</Text>
+                <View style={styles.ellipsesContainer}>
+                  <AntDesign name="ellipsis1" size={24} color="black" />
+                </View>   
               </TouchableOpacity>
           )}
           />
@@ -39,7 +40,6 @@ export default function Home(){
 const styles = StyleSheet.create({
   listContainer: {
     flex:1,
-    backgroundColor:'orange',
     justifyContent:'center',
     alignItems:'center',
 
@@ -49,8 +49,6 @@ const styles = StyleSheet.create({
     flex:1,
     width: '100%',
     height: '100%',
-    backgroundColor:'green',
-
   },
 
   listItem: {
@@ -59,14 +57,28 @@ const styles = StyleSheet.create({
     display:'flex',
     flexDirection:'row',
     justifyContent:'flex-start',
-    backgroundColor: 'gray',
-    borderBottomColor: 'black',
-    borderBottomWidth: 2
+    backgroundColor: '#FFF',
+    borderBottomColor: '#CADCFC',
+    borderBottomWidth: 1,
   },
 
   image:{
     height: 'auto',
     width: 70,
-   
+    borderRadius:20,
+    backgroundColor:'#CADCFC'
+  },
+
+  name:{
+    alignSelf:'center',
+    marginLeft: 10,
+    color:'#00246B'
+  },
+
+  ellipsesContainer:{
+    display:'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    flex:1
   }
 })
