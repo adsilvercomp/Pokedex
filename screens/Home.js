@@ -72,7 +72,10 @@ const styles = StyleSheet.create({
   name:{
     alignSelf:'center',
     marginLeft: 10,
-    color:'#00246B'
+    color:'#00246B',
+    fontFamily: 'nunito-bold',
+    fontSize: 18,
+    textTransform:'capitalize'
   },
 
   ellipsesContainer:{
