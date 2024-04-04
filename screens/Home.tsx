@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, FlatList } from 'react-native';
-
+import FetchData from "../helperMethods/FetchData";
 
 export default function Home(){
     const [pokemonData, setPokemonData] = useState<any>(null)
-
-    interface listData {
-        name: string
-        url: string
-    }
 
     const getData = async (url: string) => {
         const response = await fetch(url)
@@ -56,18 +51,6 @@ export default function Home(){
     useEffect(() => {
         main();
     },[])
-
-  
-
-    
-    // for each pokemon, grab their url
-    // make a second request
-    // grab the id
-    // grab sprite.official-artwork.front_default
-    // grab their stats
-    // grab their types
-  
-
 
 
   
