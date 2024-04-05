@@ -40,7 +40,6 @@ export default function App(){
   };
   
   const fetchData = async (url) => {
-    console.log(url);
     if(!loading)setLoading(true);
 
     try {
@@ -106,7 +105,7 @@ export default function App(){
     const Stack = createNativeStackNavigator();
 
     return(
-      <DataContext.Provider value={{pokemonData: pokemonData, fetchData:fetchData, setLoading, loading: loading, error: error, next}}>
+      <DataContext.Provider value={{pokemonData: pokemonData, fetchData:fetchData, setLoading, loading: loading, error: error, next: next}}>
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen 
