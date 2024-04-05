@@ -4,7 +4,7 @@ import Loader from '../components/Loader';
 import DataContext from '../DataContext';
 import PokemonListItem from '../components/PokemonListItem';
 
-export default function Home(){
+export default function Home({navigation}){
   const [contentOffset, setContentOffset] = useState(0);
   const [intentionalScroll, setIntentionalScroll] = useState(false);
   const {pokemonData, loading, error, fetchData, next, setLoading} = useContext(DataContext)
@@ -13,7 +13,7 @@ export default function Home(){
     const fetchMorePokemon = () => {
         disableScroll();
         offsetScroll();
-        
+
         if(next)fetchData(next);
     } 
 
@@ -54,15 +54,17 @@ export default function Home(){
                 data={pokemonData}
                 onScrollBeginDrag = {() => setIntentionalScroll(true)}
                 onEndReached={() => {
+                  console.log('testing');
                   if(intentionalScroll){
                     fetchMorePokemon()
                     setIntentionalScroll(false);
                   }
                 }}
                 scrollEnabled={!loading}
-                renderItem={({item}) => <PokemonListItem item={item}/>}
+                renderItem={({item}) => <PokemonListItem navigation={navigation} item={item}/>}
             />
-          ) }
+          )}
+          
           {loading && <Loader/>}
         </View>
         

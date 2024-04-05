@@ -2,13 +2,13 @@ import React, {memo} from 'react';
 import {Text, View, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-const PokemonListItem = memo (({item}) => {
+const PokemonListItem = memo (({navigation, item}) => {
     return(
-        <TouchableOpacity style={styles.listItem}>
+        <TouchableOpacity onPress={() => navigation.navigate('About', {item: item})} style={styles.listItem}>
             <Image style={styles.image} source={{ uri: item.sprite }}/>
             <Text style={styles.name}>{item.name}</Text>
             <View style={styles.ellipsesContainer}>
-                <AntDesign name="ellipsis1" size={24} color="black" />
+                <AntDesign name="ellipsis1" size={24} color="#00246B" />
             </View>   
         </TouchableOpacity>
     )
