@@ -56,20 +56,16 @@ export default function App(){
         stats: pokemon.data.stats,
         id: pokemon.data.id,
       }));
-      console.log('length!')
-      console.log(filteredPokemon.length);
-      console.log(filteredPokemon)
+
       if (pokemonData) {
-        setPokemonData([...pokemonData, filteredPokemon]);
+        setPokemonData([...pokemonData, ...filteredPokemon]);
       } else {
         setPokemonData(filteredPokemon);
       }
+
     } catch (error) {
-      console.log('status');
-      console.log(error.response); // Accessing the status code from the response object
       console.error('Error fetching data:', error);
       setError(true);
-      
     }
     setLoading(false);
   };

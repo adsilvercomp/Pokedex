@@ -13,48 +13,35 @@ export default function Home(){
         fetchData(next)
     } 
 
-    useEffect(() => {
-      console.log("this is the updated pokemon data array")
-      console.log(pokemonData);
-    },[pokemonData])
 
-    if(loading){
-      return (
-        <View style={styles.listContainer} >
-           <Loader/>
-        </View>
-      )
+    return(
+      <View style={styles.listContainer} >
+        {loading && <Loader/>}
 
-    }else if(error){
-      return (
-        <View style={styles.listContainer} >
-           <Text>There was an Error Fetching Data</Text>
-        </View>
-      )
-    }else{
-      return(
-        <View style={styles.listContainer} >
-          {console.log(pokemonData)}
-             <FlatList 
-                style={styles.list}
-                keyExtractor={(item => {
-                  return item.name
-                } )}
-                data={pokemonData}
-                onEndReached={fetchMorePokemon}
-                renderItem={({item}) => (
-                    <TouchableOpacity style={styles.listItem}>
-                      {console.log(item)}
-                      <Image style={styles.image} source={{ uri: item.sprite }}/>
-                      <Text style={styles.name}>{item.name}</Text>
-                      <View style={styles.ellipsesContainer}>
-                        <AntDesign name="ellipsis1" size={24} color="black" />
-                      </View>   
-                    </TouchableOpacity>
-                )}
-            />
-        </View>
-      )}
+        {error && <Text>There was an Error Fetching Data</Text>}
+
+        {pokemonData && (
+          <FlatList 
+              style={styles.list}
+              keyExtractor={((item) => {
+                return item.name
+              } )}
+              data={pokemonData}
+              onEndReached={fetchMorePokemon}
+              renderItem={({item}) => (
+                  <TouchableOpacity style={styles.listItem}>
+                    <Image style={styles.image} source={{ uri: item.sprite }}/>
+                    <Text style={styles.name}>{item.name}</Text>
+                    <View style={styles.ellipsesContainer}>
+                      <AntDesign name="ellipsis1" size={24} color="black" />
+                    </View>   
+                  </TouchableOpacity>
+              )}
+          />
+        ) }
+      </View>
+      
+    )
 }
 
 const styles = StyleSheet.create({

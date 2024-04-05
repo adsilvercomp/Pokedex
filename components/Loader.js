@@ -9,8 +9,9 @@ const App = () => (
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
+    alignItems: 'center', // Center the ActivityIndicator horizontally
+    height:50
   },
   horizontal: {
     flexDirection: 'row',
