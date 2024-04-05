@@ -42,8 +42,7 @@ export default function Home(){
     }else{
       return(
         <View style={styles.listContainer} >
-          {loading && <Loader/>}
-  
+      
           {pokemonData && (
             <FlatList 
                 style={styles.list}
@@ -64,6 +63,7 @@ export default function Home(){
                 renderItem={({item}) => <PokemonListItem item={item}/>}
             />
           ) }
+          {loading && <Loader/>}
         </View>
         
       )
