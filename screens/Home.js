@@ -1,47 +1,74 @@
-import React, { useContext, useEffect } from 'react';
-import { Text, View, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import React, { useContext,  useState } from 'react';
+import { Text, View, FlatList, StyleSheet } from 'react-native';
 import Loader from '../components/Loader';
 import DataContext from '../DataContext';
-
+import PokemonListItem from '../components/PokemonListItem';
 
 export default function Home(){
+  const [contentOffset, setContentOffset] = useState(0);
+  const [intentionalScroll, setIntentionalScroll] = useState(false);
+  const {pokemonData, loading, error, fetchData, next, setLoading} = useContext(DataContext)
   
-  const {pokemonData, loading, error, fetchData, next} = useContext(DataContext)
 
     const fetchMorePokemon = () => {
-        fetchData(next)
+        disableScroll();
+        offsetScroll();
+        
+        if(next)fetchData(next);
     } 
 
+    const getItemLayout = (data, index) => (
+      { length: 100, offset: 100 * index, index }
+    );
 
-    return(
-      <View style={styles.listContainer} >
-        {loading && <Loader/>}
+    const offsetScroll = () => {
+      // Calculate the offset based on new data length:
+      // new list length * item height - the height of 10 new items
+      const newOffset = (pokemonData.length + 10) * 100 - 1000;
+      setContentOffset(newOffset);
+    };
 
-        {error && <Text>There was an Error Fetching Data</Text>}
+    const disableScroll = () => {
+      // disable scroll while data is loading
+      setLoading(true);
+    }
 
-        {pokemonData && (
-          <FlatList 
-              style={styles.list}
-              keyExtractor={((item) => {
-                return item.name
-              } )}
-              data={pokemonData}
-              onEndReached={fetchMorePokemon}
-              renderItem={({item}) => (
-                  <TouchableOpacity style={styles.listItem}>
-                    <Image style={styles.image} source={{ uri: item.sprite }}/>
-                    <Text style={styles.name}>{item.name}</Text>
-                    <View style={styles.ellipsesContainer}>
-                      <AntDesign name="ellipsis1" size={24} color="black" />
-                    </View>   
-                  </TouchableOpacity>
-              )}
-          />
-        ) }
-      </View>
-      
-    )
+    if(error){
+      return(
+        <View style={styles.listContainer} >
+          <Text>There was an Error Fetching Data</Text>
+        </View>
+      )
+    }else{
+      return(
+        <View style={styles.listContainer} >
+          {loading && <Loader/>}
+  
+          {pokemonData && (
+            <FlatList 
+                style={styles.list}
+                getItemLayout={getItemLayout}
+                keyExtractor={((item) => {
+                  return item.name
+                } )}
+                contentOffset={contentOffset}
+                data={pokemonData}
+                onScrollBeginDrag = {() => setIntentionalScroll(true)}
+                onEndReached={() => {
+                  if(intentionalScroll){
+                    fetchMorePokemon()
+                    setIntentionalScroll(false);
+                  }
+                }}
+                scrollEnabled={!loading}
+                renderItem={({item}) => <PokemonListItem item={item}/>}
+            />
+          ) }
+        </View>
+        
+      )
+    }
+   
 }
 
 const styles = StyleSheet.create({
@@ -49,7 +76,6 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent:'center',
     alignItems:'center',
-
   },
 
   list: {
@@ -58,37 +84,5 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 
-  listItem: {
-    padding:10,
-    height:100,
-    display:'flex',
-    flexDirection:'row',
-    justifyContent:'flex-start',
-    backgroundColor: '#FFF',
-    borderBottomColor: '#CADCFC',
-    borderBottomWidth: 1,
-  },
-
-  image:{
-    height: 'auto',
-    width: 70,
-    borderRadius:20,
-    backgroundColor:'#CADCFC'
-  },
-
-  name:{
-    alignSelf:'center',
-    marginLeft: 20,
-    color:'#00246B',
-    fontFamily: 'nunito-bold',
-    fontSize: 18,
-    textTransform:'capitalize'
-  },
-
-  ellipsesContainer:{
-    display:'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    flex:1
-  }
 })
+

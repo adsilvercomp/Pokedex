@@ -40,7 +40,9 @@ export default function App(){
   };
   
   const fetchData = async (url) => {
-    setLoading(true);
+    console.log(url);
+    if(!loading)setLoading(true);
+
     try {
       const { data: initialData, response: initialResponse } = await getInitialData(
         url
@@ -67,7 +69,9 @@ export default function App(){
       console.error('Error fetching data:', error);
       setError(true);
     }
+
     setLoading(false);
+
   };
   
 
@@ -102,7 +106,7 @@ export default function App(){
     const Stack = createNativeStackNavigator();
 
     return(
-      <DataContext.Provider value={{pokemonData: pokemonData, fetchData:fetchData, loading: loading, error: error, next}}>
+      <DataContext.Provider value={{pokemonData: pokemonData, fetchData:fetchData, setLoading, loading: loading, error: error, next}}>
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen 
