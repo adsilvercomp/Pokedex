@@ -1,41 +1,60 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Text, View, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { DataContext } from '../App';
 import { AntDesign } from '@expo/vector-icons';
 import Loader from '../components/Loader';
-
+import DataContext from '../DataContext';
 
 
 export default function Home(){
   
-  const {pokemonData, loading, error} = useContext(DataContext)
+  const {pokemonData, loading, error, fetchData, next} = useContext(DataContext)
 
+    const fetchMorePokemon = () => {
+        fetchData(next)
+    } 
 
-    return(
-      <View style={styles.listContainer}>
-        {loading && <Loader/>}
+    useEffect(() => {
+      console.log("this is the updated pokemon data array")
+      console.log(pokemonData);
+    },[pokemonData])
 
-        {error && <Text>Error Loading Data</Text>}
+    if(loading){
+      return (
+        <View style={styles.listContainer} >
+           <Loader/>
+        </View>
+      )
 
-        {pokemonData && (
-          <FlatList 
-          style={styles.list}
-          keyExtractor={(item => item.id)}
-          data={pokemonData}
-          renderItem={({item}) => (
-              <TouchableOpacity style={styles.listItem}>
-                <Image style={styles.image} source={{ uri: item.sprite }}/>
-                <Text style={styles.name}>{item.name}</Text>
-                <View style={styles.ellipsesContainer}>
-                  <AntDesign name="ellipsis1" size={24} color="black" />
-                </View>   
-              </TouchableOpacity>
-          )}
-          />
-        )}
-      </View>
-    )
-    
+    }else if(error){
+      return (
+        <View style={styles.listContainer} >
+           <Text>There was an Error Fetching Data</Text>
+        </View>
+      )
+    }else{
+      return(
+        <View style={styles.listContainer} >
+          {console.log(pokemonData)}
+             <FlatList 
+                style={styles.list}
+                keyExtractor={(item => {
+                  return item.name
+                } )}
+                data={pokemonData}
+                onEndReached={fetchMorePokemon}
+                renderItem={({item}) => (
+                    <TouchableOpacity style={styles.listItem}>
+                      {console.log(item)}
+                      <Image style={styles.image} source={{ uri: item.sprite }}/>
+                      <Text style={styles.name}>{item.name}</Text>
+                      <View style={styles.ellipsesContainer}>
+                        <AntDesign name="ellipsis1" size={24} color="black" />
+                      </View>   
+                    </TouchableOpacity>
+                )}
+            />
+        </View>
+      )}
 }
 
 const styles = StyleSheet.create({
