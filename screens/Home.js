@@ -58,7 +58,6 @@ export default function Home({navigation}){
                 data={pokemonData}
                 onEndReached={() => {
                   if(fetchReady){
-                    console.log('test');
                     setFetchReady(false);
                     fetchMorePokemon();
                   }
@@ -84,7 +83,6 @@ const styles = StyleSheet.create({
   },
 
   list: {
-    // flex:1,
     width: '100%',
     height: '100%',
   },
