@@ -1,12 +1,14 @@
 {
-    "PokemonDarkBlue": "#1D2C5E",
+    "PokemonDarkBlue": "#313233",
     "PokemonMediumBlue": "#21386E",
-    "PokemonLightBlue": "#3466AF",
+    "PokemonLightBlue": "#D2E9F8",
     "PokemonDarkYellow": "#C7A008",
     "PokemonMediumYellow": "#FFCB05",
-    "PokemonRed": "#FF5733",
-    "lightBlue":"#CADCFC",
+    "PokemonRed": "#C53A36",
+    "lightBlue":"#c7e3f6",
+    "cream": "#ebe7d3",
     "white": "#FFF",
-    "Font": "nunito-regular",
-    "FontBold": "nunito-bold"
+    "line": "#ccc7ab",
+    "Font": "ZenMaruGothicMedium",
+    "FontBold": "ZenMaruGothicBold"
 }

@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import {Text, View, Image, TouchableOpacity, StyleSheet} from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
-import {lightBlue, PokemonRed, PokemonDarkBlue, FontBold, white} from "../styles/styleVariables.json";
+import { FontAwesome5 } from '@expo/vector-icons';
+import {lightBlue, PokemonRed, PokemonDarkBlue, FontBold, white, cream, line} from "../styles/styleVariables.json";
 
 const PokemonListItem = memo (({navigation, item}) => {
     return(
@@ -9,7 +9,8 @@ const PokemonListItem = memo (({navigation, item}) => {
             <Image style={styles.image} source={{ uri: item.sprite }}/>
             <Text style={styles.name}>{item.name}</Text>
             <View style={styles.ellipsesContainer}>
-                <AntDesign name="ellipsis1" size={24} color={PokemonRed} />
+                <FontAwesome5 name="ellipsis-h" size={25} color={PokemonRed} />
+
             </View>   
         </TouchableOpacity>
     )
@@ -18,20 +19,22 @@ const PokemonListItem = memo (({navigation, item}) => {
 const styles = StyleSheet.create({
     listItem: {
       padding:10,
-      height:100,
+      height:110,
       display:'flex',
       flexDirection:'row',
       justifyContent:'flex-start',
-      backgroundColor: white,
-      borderBottomColor: lightBlue,
+      backgroundColor: cream,
+      borderBottomColor: line,
       borderBottomWidth: 1,
     },
   
     image:{
       height: 'auto',
-      width: 70,
+      width: 90,
       borderRadius:20,
-      backgroundColor:lightBlue
+      backgroundColor:lightBlue,
+      borderWidth:3.5,
+      borderColor: white
     },
   
     name:{
@@ -47,7 +50,9 @@ const styles = StyleSheet.create({
       display:'flex',
       justifyContent: 'flex-end',
       alignItems: 'flex-end',
-      flex:1
+      justifyContent: 'center',
+      flex:1,
+      marginRight:5
     }
   })
 

@@ -6,7 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import DataContext from './DataContext';
-import {lightBlue, PokemonRed, FontBold} from "./styles/styleVariables.json";
+import { PokemonRed, FontBold, cream} from "./styles/styleVariables.json";
 import axios from 'axios';
 
 export default function App(){
@@ -73,8 +73,8 @@ export default function App(){
   
     // import custom fonts at top level 
     const [fontsLoaded] = useFonts({
-        'nunito-regular': require('./assets/fonts/Nunito-Regular.ttf'),
-        'nunito-bold': require('./assets/fonts/Nunito-Bold.ttf')
+        'ZenMaruGothicBold': require('./assets/fonts/ZenMaruGothic-Bold.ttf'),
+        'ZenMaruGothicMedium': require('./assets/fonts/ZenMaruGothic-Medium.ttf'),
     });
 
     useEffect(() => {
@@ -117,9 +117,9 @@ export default function App(){
               options={{
                 title: "Pokédex",
                 headerStyle: {
-                  backgroundColor: lightBlue,
+                  backgroundColor: PokemonRed,
                 },
-                headerTintColor: PokemonRed,
+                headerTintColor: cream,
                 headerTitleStyle: {
                   fontFamily: FontBold,
                   fontSize: 30,
@@ -132,9 +132,9 @@ export default function App(){
               options={{
                 title: "About",
                 headerStyle: {
-                  backgroundColor: lightBlue,
+                  backgroundColor: PokemonRed,
                 },
-                headerTintColor: PokemonRed,
+                headerTintColor: cream,
                 headerTitleStyle: {
                   fontFamily: FontBold,
                   fontSize: 30,
