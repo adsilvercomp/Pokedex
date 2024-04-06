@@ -1,9 +1,10 @@
 import React from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import { lightBlue } from "../styles/styleVariables.json";
 
 const App = () => (
   <View style={[styles.container, styles.horizontal]}>
-    <ActivityIndicator size="large" color="#CADCFC" />
+    <ActivityIndicator size="large" color={lightBlue} />
   </View>
 );
 
