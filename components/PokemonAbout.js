@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
-import { PokemonLightBlue, PokemonDarkBlue, PokemonDarkYellow, Font, FontBold, lightBlue } from "../styles/styleVariables.json";
+import { PokemonDarkBlue, Font, FontBold, lightBlue } from "../styles/styleVariables.json";
 
 export default PokemonAbout = ({info, item}) => {   
 

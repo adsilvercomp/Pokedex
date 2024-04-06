@@ -58,7 +58,6 @@ export default function Home({navigation}){
                 data={pokemonData}
                 onEndReached={() => {
                   if(fetchReady){
-                    console.log('testing123')
                     setFetchReady(false);
                     fetchMorePokemon();
                   }

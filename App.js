@@ -22,14 +22,14 @@ export default function App(){
     return response;
   };
   
+  // followup request to get info about each pokemon in initial request
   const processUrls = async (data) => {
-
     const urlPromises = data.map(async (pokemon) => {
       const response = await axios.get(pokemon.url)
       return response
     });
   
-    // Wait for all follow-up fetches to complete and return the results
+    // return an array of promises to execute together
     const results = await Promise.all(urlPromises);
     return results;
   };
@@ -38,12 +38,16 @@ export default function App(){
     if(!loading)setLoading(true);
 
     try {
+      // get initial data
       const { data: initialData } = await getInitialData(url);
 
-
+      // set url for next set of pokemon to grab
       setNext(initialData.next);
+
+      // get additional data for each of the pokemon returned in returned in initialData
       const processedData = await processUrls(initialData.results);
 
+      // create an object for each of the pokemon that the flatList can consume
       const filteredPokemon = processedData.map((pokemon) => ({
         sprite: pokemon.data.sprites.front_default,
         name: pokemon.data.name,
@@ -98,7 +102,13 @@ export default function App(){
     const Stack = createNativeStackNavigator();
 
     return(
-      <DataContext.Provider value={{pokemonData: pokemonData, fetchData:fetchData, setLoading, loading: loading, error: error, next: next}}>
+      <DataContext.Provider value={{pokemonData: pokemonData, 
+        fetchData:fetchData, 
+        setLoading: setLoading, 
+        loading: loading, 
+        error: error, 
+        next: next
+      }}>
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen 
