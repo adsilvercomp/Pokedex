@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import {Text, View, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import {lightBlue, PokemonRed, PokemonDarkBlue, FontBold} from "../styles/styleVariables.json";
+import {lightBlue, PokemonRed, PokemonDarkBlue, FontBold, white} from "../styles/styleVariables.json";
 
 const PokemonListItem = memo (({navigation, item}) => {
     return(
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
       display:'flex',
       flexDirection:'row',
       justifyContent:'flex-start',
-      backgroundColor: '#FFF',
+      backgroundColor: white,
       borderBottomColor: lightBlue,
       borderBottomWidth: 1,
     },

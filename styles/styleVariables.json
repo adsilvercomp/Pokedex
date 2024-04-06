@@ -6,6 +6,7 @@
     "PokemonMediumYellow": "#FFCB05",
     "PokemonRed": "#FF5733",
     "lightBlue":"#CADCFC",
+    "white": "#FFF",
     "Font": "nunito-regular",
     "FontBold": "nunito-bold"
 }

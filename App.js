@@ -35,7 +35,6 @@ export default function App(){
   };
   
   const fetchData = async (url) => {
-    console.log(url);
     if(!loading)setLoading(true);
 
     try {
@@ -60,6 +59,7 @@ export default function App(){
 
     } catch (error) {
       console.error('Error fetching data:', error);
+      console.log(error)
       setError(true);
     }
 
@@ -67,7 +67,6 @@ export default function App(){
 
   };
   
-
     // import custom fonts at top level 
     const [fontsLoaded] = useFonts({
         'nunito-regular': require('./assets/fonts/Nunito-Regular.ttf'),

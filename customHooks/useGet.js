@@ -7,7 +7,6 @@ const useGet = (url) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        
         axios.get(url)
         .then(function (response) {
             setData(response.data);
@@ -20,7 +19,6 @@ const useGet = (url) => {
         })
 
      },[url])
-
     //  data being returned from the custom hook
      return { data, isPending, error }
 }
