@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import DataContext from './DataContext';
 import {lightBlue, PokemonRed, FontBold} from "./styles/styleVariables.json";
+import axios from 'axios';
 
 export default function App(){
   const [pokemonData, setPokemonData] = useState(null)
@@ -17,31 +18,15 @@ export default function App(){
 
   // code to fetch data
   const getInitialData = async (url) => {
-    let statusCode = 200;
-
-    const response = await fetch(url);
-    // console.log("this is response1")
-    // console.log(response);
-    if (!response.ok) {
-      statusCode = response.status;
-      throw new Error(`Failed to fetch initial data ${statusCode} error`);
-    }
-    const data = await response.json();
-    return { data: data, statusCode: statusCode };
+    const response = await axios.get(url);
+    return response;
   };
   
   const processUrls = async (data) => {
-    let statusCode = 200;
 
     const urlPromises = data.map(async (pokemon) => {
-      const response = await fetch(pokemon.url);
-    //   console.log("this is response2")
-    // console.log(response);
-      if (!response.ok) {
-        statusCode = response.status;
-        throw new Error(`Failed to fetch initial data ${statusCode} error`);
-      }
-      return { data: await response.json(), statusCode: statusCode };
+      const response = await axios.get(pokemon.url)
+      return response
     });
   
     // Wait for all follow-up fetches to complete and return the results
@@ -50,14 +35,16 @@ export default function App(){
   };
   
   const fetchData = async (url) => {
+    console.log(url);
     if(!loading)setLoading(true);
 
     try {
       const { data: initialData } = await getInitialData(url);
-  
+
+
+      setNext(initialData.next);
       const processedData = await processUrls(initialData.results);
-      // console.log('processed');
-      // console.log(processedData);
+
       const filteredPokemon = processedData.map((pokemon) => ({
         sprite: pokemon.data.sprites.front_default,
         name: pokemon.data.name,

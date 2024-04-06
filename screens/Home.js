@@ -3,6 +3,7 @@ import { Text, View, FlatList, StyleSheet } from 'react-native';
 import Loader from '../components/Loader';
 import DataContext from '../DataContext';
 import PokemonListItem from '../components/PokemonListItem';
+import ErrorMessage from "../components/Error";
 
 export default function Home({navigation}){
   const [contentOffset, setContentOffset] = useState(0);
@@ -17,7 +18,7 @@ export default function Home({navigation}){
     const fetchMorePokemon = () => {
         disableScroll();
         offsetScroll();
-
+        console.log(next);
         if(next)fetchData(next);
     } 
 
@@ -39,9 +40,7 @@ export default function Home({navigation}){
 
     if(error){
       return(
-        <View style={styles.listContainer} >
-          <Text>There was an Error Fetching Data</Text>
-        </View>
+        <ErrorMessage/>
       )
     }else{
       return(
@@ -58,6 +57,7 @@ export default function Home({navigation}){
                 data={pokemonData}
                 onEndReached={() => {
                   if(fetchReady){
+                    console.log('testing123')
                     setFetchReady(false);
                     fetchMorePokemon();
                   }

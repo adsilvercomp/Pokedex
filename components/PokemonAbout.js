@@ -10,15 +10,15 @@ export default PokemonAbout = ({info, item}) => {
                 <View style={styles.header}>
                   <Image style={styles.image} source={{ uri: item.sprite }}/>
                 <Text style={styles.name}>{item.name}</Text>
-               </View>
-               <View style={styles.infoContainer}>
+                </View>
+                <View style={styles.infoContainer}>
                  <Text style={styles.sectionTitle}>Background:</Text> 
-                   <Text style={styles.statFont}>Type: {info.egg_groups[1].name}</Text>
+                   <Text style={styles.statFont}>Type: {info.egg_groups[0]? info.egg_groups[0].name :'unKnown' }</Text>
                    <Text style={styles.statFont}>Capture Rate: {info.capture_rate}</Text>
                    <Text style={styles.statFont}>Color: {info.color.name}</Text>
                    <Text style={styles.statFont}>Evolves From: {info.evolves_from_species ? info.evolves_from_species.name: 'N/A'}</Text>
                    <Text style={styles.statFont}>Base Happiness: {info.base_happiness}</Text>
-               </View> 
+                </View> 
             </>
           )
     }

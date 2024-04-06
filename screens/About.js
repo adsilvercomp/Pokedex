@@ -2,7 +2,7 @@ import { Text, View, StyleSheet} from 'react-native';
 import PokemonAbout from "../components/PokemonAbout";
 import Loader from "../components/Loader";
 import useGet from "../customHooks/useGet";
-
+import ErrorMessage from "../components/Error";
 export default function About({route}){
  
   const { item } = route.params;
@@ -10,7 +10,7 @@ export default function About({route}){
   const {data:info, isPending, error} = useGet(item.species.url);
     
 
-    if(info){
+    if(info && item){
       return(
         <View style={styles.container}>
            <PokemonAbout 
@@ -21,9 +21,7 @@ export default function About({route}){
       ) 
     }else if(error){
       return(
-        <View style={styles.container}>
-          <Text>There was an error loading the data</Text>
-        </View>
+        <ErrorMessage/>
       )
     }else if(isPending){
       return(
@@ -43,11 +41,6 @@ const styles = StyleSheet.create({
         flex:1,
         width: '100%',
         display:'flex',
-      },
-
-      errorMessage: {
-
-      }
-
+    }
 })
 
