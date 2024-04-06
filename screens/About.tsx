@@ -1,14 +1,17 @@
 import React from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
-
+import { PokemonLightBlue, PokemonDarkBlue, PokemonDarkYellow, FontBold, lightBlue } from "../styles/styleVariables.json";
 
 export default function About({route}){
     const { item } = route.params;
  
     return(
         <View style={styles.container}>
-            <Image style={styles.image} source={{ uri: item.sprite }}/>
-            <Text style={styles.name}>{item.name}</Text>
+            <View style={styles.header}>
+                <Image style={styles.image} source={{ uri: item.sprite }}/>
+                <Text style={styles.name}>{item.name}</Text>
+            </View>
+            
         </View>
     )
 }
@@ -18,21 +21,29 @@ const styles = StyleSheet.create({
         flex:1,
         width: '100%',
         display:'flex',
-        justifyContent:'center',
-        alignItems:'center'
       },
+
+      header:{
+        height: 150,
+        display: 'flex',
+        borderBottomColor: lightBlue,
+        borderBottomWidth:1,
+        alignItems: 'center',
+        textAlign:'center',
+        justifyContent: 'center'
+      },
+
     image:{
-        height: 'auto',
+        height: 70,
         width: 70,
         borderRadius:20,
-        backgroundColor:'#CADCFC'
+        backgroundColor: lightBlue,
       },
     
       name:{
-        alignSelf:'center',
-        marginLeft: 20,
-        color:'#00246B',
-        fontFamily: 'nunito-bold',
+        marginTop:10,
+        color: PokemonDarkBlue,
+        fontFamily: FontBold,
         fontSize: 18,
         textTransform:'capitalize'
       },

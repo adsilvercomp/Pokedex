@@ -6,7 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import DataContext from './DataContext';
-
+import {lightBlue, PokemonRed, FontBold} from "./styles/styleVariables.json";
 
 export default function App(){
   const [pokemonData, setPokemonData] = useState(null)
@@ -111,18 +111,30 @@ export default function App(){
             <Stack.Screen 
               name="Home" 
               component={Home} 
+              options={{
+                title: "Pokédex",
+                headerStyle: {
+                  backgroundColor: lightBlue,
+                },
+                headerTintColor: PokemonRed,
+                headerTitleStyle: {
+                  fontFamily: FontBold,
+                  fontSize: 30,
+                },
+              }} 
             />
             <Stack.Screen 
               name="About" 
               component={About} 
               options={{
-                title: "details screen",
+                title: "About",
                 headerStyle: {
-                  backgroundColor: '#f4511e',
+                  backgroundColor: lightBlue,
                 },
-                headerTintColor: '#fff',
+                headerTintColor: PokemonRed,
                 headerTitleStyle: {
-                  fontWeight: 'bold',
+                  fontFamily: FontBold,
+                  fontSize: 30,
                 },
               }} 
             />

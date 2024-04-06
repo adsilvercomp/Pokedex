@@ -1,6 +1,7 @@
 import React, {memo} from 'react';
 import {Text, View, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import {lightBlue, PokemonRed, PokemonDarkBlue, FontBold} from "../styles/styleVariables.json";
 
 const PokemonListItem = memo (({navigation, item}) => {
     return(
@@ -8,7 +9,7 @@ const PokemonListItem = memo (({navigation, item}) => {
             <Image style={styles.image} source={{ uri: item.sprite }}/>
             <Text style={styles.name}>{item.name}</Text>
             <View style={styles.ellipsesContainer}>
-                <AntDesign name="ellipsis1" size={24} color="#00246B" />
+                <AntDesign name="ellipsis1" size={24} color={PokemonRed} />
             </View>   
         </TouchableOpacity>
     )
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
       flexDirection:'row',
       justifyContent:'flex-start',
       backgroundColor: '#FFF',
-      borderBottomColor: '#CADCFC',
+      borderBottomColor: lightBlue,
       borderBottomWidth: 1,
     },
   
@@ -30,14 +31,14 @@ const styles = StyleSheet.create({
       height: 'auto',
       width: 70,
       borderRadius:20,
-      backgroundColor:'#CADCFC'
+      backgroundColor:lightBlue
     },
   
     name:{
       alignSelf:'center',
       marginLeft: 20,
-      color:'#00246B',
-      fontFamily: 'nunito-bold',
+      color: PokemonDarkBlue,
+      fontFamily: FontBold,
       fontSize: 18,
       textTransform:'capitalize'
     },
