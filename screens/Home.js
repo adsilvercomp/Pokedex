@@ -12,6 +12,7 @@ export default function Home({navigation}){
   const {pokemonData, loading, error, fetchData, next, setLoading} = useContext(DataContext)
   
    useEffect(() => {
+        // ensures that data is finished loading before next fetch is made
         setFetchReady(true);
     },[pokemonData])
 
