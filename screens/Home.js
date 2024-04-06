@@ -1,4 +1,4 @@
-import React, { useContext,  useState } from 'react';
+import React, { useContext,  useState, useEffect } from 'react';
 import { Text, View, FlatList, StyleSheet } from 'react-native';
 import Loader from '../components/Loader';
 import DataContext from '../DataContext';
@@ -6,9 +6,13 @@ import PokemonListItem from '../components/PokemonListItem';
 
 export default function Home({navigation}){
   const [contentOffset, setContentOffset] = useState(0);
-  const [intentionalScroll, setIntentionalScroll] = useState(false);
+  const [fetchReady, setFetchReady] = useState(true);
+  
   const {pokemonData, loading, error, fetchData, next, setLoading} = useContext(DataContext)
   
+   useEffect(() => {
+        setFetchReady(true);
+    },[pokemonData])
 
     const fetchMorePokemon = () => {
         disableScroll();
@@ -52,12 +56,11 @@ export default function Home({navigation}){
                 } )}
                 contentOffset={contentOffset}
                 data={pokemonData}
-                onScrollBeginDrag = {() => setIntentionalScroll(true)}
                 onEndReached={() => {
-                  console.log('testing');
-                  if(intentionalScroll){
-                    fetchMorePokemon()
-                    setIntentionalScroll(false);
+                  if(fetchReady){
+                    console.log('test');
+                    setFetchReady(false);
+                    fetchMorePokemon();
                   }
                 }}
                 scrollEnabled={!loading}
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
   },
 
   list: {
-    flex:1,
+    // flex:1,
     width: '100%',
     height: '100%',
   },

@@ -17,21 +17,33 @@ export default function App(){
 
   // code to fetch data
   const getInitialData = async (url) => {
+    let statusCode = null;
+
     const response = await fetch(url);
+    // console.log("this is response1")
+    // console.log(response);
     if (!response.ok) {
-      throw new Error('Failed to fetch initial data');
+      statusCode = response.status;
+      return statusCode
+      throw new Error(`Failed to fetch initial data ${statusCode} error`);
     }
     const data = await response.json();
-    return { data: data, response };
+    return { data: data, statusCode: statusCode };
   };
   
   const processUrls = async (data) => {
+    let statusCode = null;
+
     const urlPromises = data.map(async (pokemon) => {
       const response = await fetch(pokemon.url);
+    //   console.log("this is response2")
+    // console.log(response);
       if (!response.ok) {
-        throw new Error(`Failed to fetch data from ${pokemon.url}`);
+        statusCode = response.status;
+        return statusCode;
+        throw new Error(`Failed to fetch initial data ${statusCode} error`);
       }
-      return { data: await response.json(), response };
+      return { data: await response.json(), statusCode: statusCode };
     });
   
     // Wait for all follow-up fetches to complete and return the results
@@ -43,14 +55,11 @@ export default function App(){
     if(!loading)setLoading(true);
 
     try {
-      const { data: initialData, response: initialResponse } = await getInitialData(
-        url
-      );
-
-
+      const { data: initialData } = await getInitialData(url);
+      console.log(initialData);
       setNext(initialData.next);
+
       const processedData = await processUrls(initialData.results);
-  
       const filteredPokemon = processedData.map((pokemon) => ({
         sprite: pokemon.data.sprites.front_default,
         name: pokemon.data.name,
