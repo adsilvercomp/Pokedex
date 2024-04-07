@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
-import { PokemonDarkBlue, Font, FontBold, lightBlue } from "../styles/styleVariables.json";
+import { PokemonDarkBlue, Font, FontBold, lightBlue, cream, line, white } from "../styles/styleVariables.json";
 
 export default PokemonAbout = ({info, item}) => {   
 
@@ -12,12 +12,12 @@ export default PokemonAbout = ({info, item}) => {
                 <Text style={styles.name}>{item.name}</Text>
                 </View>
                 <View style={styles.infoContainer}>
-                 <Text style={styles.sectionTitle}>Background:</Text> 
-                   <Text style={styles.statFont}>Type: {info.egg_groups[0]? info.egg_groups[0].name :'unKnown' }</Text>
-                   <Text style={styles.statFont}>Capture Rate: {info.capture_rate}</Text>
-                   <Text style={styles.statFont}>Color: {info.color.name}</Text>
-                   <Text style={styles.statFont}>Evolves From: {info.evolves_from_species ? info.evolves_from_species.name: 'N/A'}</Text>
-                   <Text style={styles.statFont}>Base Happiness: {info.base_happiness}</Text>
+                    <Text style={styles.sectionTitle}>Background:</Text> 
+                    <Text style={styles.statFont}>Type: {info.egg_groups[0]? info.egg_groups[0].name :'unKnown' }</Text>
+                    <Text style={styles.statFont}>Capture Rate: {info.capture_rate}</Text>
+                    <Text style={styles.statFont}>Color: {info.color.name}</Text>
+                    <Text style={styles.statFont}>Evolves From: {info.evolves_from_species ? info.evolves_from_species.name: 'N/A'}</Text>
+                    <Text style={styles.statFont}>Base Happiness: {info.base_happiness}</Text>
                 </View> 
             </>
           )
@@ -29,24 +29,27 @@ export default PokemonAbout = ({info, item}) => {
 const styles = StyleSheet.create({
 
       header:{
-        height: 150,
+        height: 250,
         display: 'flex',
-        borderBottomColor: lightBlue,
+        borderBottomColor: line,
         borderBottomWidth:1,
         alignItems: 'center',
         textAlign:'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor:cream
       },
 
-    image:{
-        height: 70,
-        width: 70,
+      image:{
+        height: 150,
+        width: 150,
         borderRadius:20,
-        backgroundColor: lightBlue,
+        backgroundColor:lightBlue,
+        borderWidth: 3.5,
+        borderColor: white
       },
     
       name:{
-        marginTop:10,
+        marginTop:14,
         color: PokemonDarkBlue,
         fontFamily: FontBold,
         fontSize: 18,
@@ -57,6 +60,7 @@ const styles = StyleSheet.create({
         flex:1,
         display: 'flex',
         alignItems:'center',
+        backgroundColor: cream
 
       },
       sectionTitle:{
@@ -73,11 +77,6 @@ const styles = StyleSheet.create({
         textTransform: 'capitalize'
       },
 
-      scrollContainer: {
-        flex:1,
-        display: 'flex',
-        justifyContent:'center',
-      }
 
 })
 
