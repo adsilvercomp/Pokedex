@@ -1,5 +1,5 @@
 import React, { useContext,  useState, useEffect } from 'react';
-import { Text, View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import Loader from '../components/Loader';
 import DataContext from '../DataContext';
 import PokemonListItem from '../components/PokemonListItem';
@@ -19,7 +19,6 @@ export default function Home({navigation}){
     const fetchMorePokemon = () => {
         disableScroll();
         offsetScroll();
-        console.log(next);
         if(next)fetchData(next);
     } 
 
