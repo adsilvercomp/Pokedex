@@ -22,7 +22,6 @@ export default function App(){
       const response = await axios.get(url);
       return response;
     }catch(err){
-      console.log(url);
       console.error('Error fetching initial pokemon list data:', err.message);
       throw err; 
     }
@@ -31,7 +30,6 @@ export default function App(){
   // followup request to get info about each pokemon in initial request
   const processUrls = async (data) => {
     const urlPromises = data.map(async (pokemon) => {
-      console.log(pokemon);
       try{
         response = await axios.get(pokemon?.url)
         return response
@@ -82,7 +80,7 @@ export default function App(){
       }
 
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching data:', error.message);
       
       setError(true);
     }

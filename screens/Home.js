@@ -23,7 +23,7 @@ export default function Home({navigation}){
     } 
 
     const getItemLayout = (data, index) => (
-      { length: 100, offset: 100 * index, index }
+      { length: 110, offset: 110 * index, index }
     );
 
     const offsetScroll = () => {
@@ -67,11 +67,10 @@ export default function Home({navigation}){
           )}
           
           {loading && <Loader/>}
-        </View>
-        
+        </View> 
       )
+      
     }
-   
 }
 
 const styles = StyleSheet.create({
