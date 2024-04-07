@@ -18,20 +18,40 @@ export default function App(){
 
   // code to fetch data
   const getInitialData = async (url) => {
-    const response = await axios.get(url);
-    return response;
+    try{
+      const response = await axios.get(url);
+      return response;
+    }catch(err){
+      console.log(url);
+      console.error('Error fetching initial pokemon list data:', err.message);
+      throw err; 
+    }
+    
+    
   };
   
   // followup request to get info about each pokemon in initial request
   const processUrls = async (data) => {
     const urlPromises = data.map(async (pokemon) => {
-      const response = await axios.get(pokemon.url)
-      return response
+      console.log(pokemon);
+      try{
+        response = await axios.get(pokemon?.url)
+        return response
+      }catch(err){
+        console.error('Error fetching individual pokemon:', err.message);
+        throw err; 
+      }
     });
   
     // return an array of promises to execute together
-    const results = await Promise.all(urlPromises);
-    return results;
+    try{
+      const results = await Promise.all(urlPromises);
+      return results.filter(result => result !== null); ;
+    }catch(err) {
+      console.error('Error resolving individual promises:', err.message); // Log error details
+      throw err; // Rethrow or return a special value to indicate failure
+    }
+    
   };
   
   const fetchData = async (url) => {
@@ -48,12 +68,14 @@ export default function App(){
       const processedData = await processUrls(initialData.results);
 
       // create an object for each of the pokemon that the flatList can consume
-      const filteredPokemon = processedData.map((pokemon) => ({
-        sprite: pokemon.data.sprites.front_default,
-        name: pokemon.data.name,
-        species: pokemon.data.species,
-        id: pokemon.data.id,
-      }));
+      const filteredPokemon = processedData.map((pokemon) => {
+        return ({
+          sprite: pokemon.data.sprites.front_default,
+          name: pokemon.data.name,
+          species: pokemon.data.species,
+          id: pokemon.data.id,
+        })
+      });
 
       if (pokemonData) {
         setPokemonData([...pokemonData, ...filteredPokemon]);
@@ -63,7 +85,7 @@ export default function App(){
 
     } catch (error) {
       console.error('Error fetching data:', error);
-      console.log(error)
+      
       setError(true);
     }
 

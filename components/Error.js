@@ -5,7 +5,7 @@ import { FontBold, PokemonDarkBlue, cream } from "../styles/styleVariables.json"
 export default ErrorMessage = () => {
     return(
         <View style={styles.errorContainer}>
-            <Text style={styles.errorMessage}>There was an error loading the data</Text>
+            <Text style={styles.errorMessage}>There was an error fetching the data</Text>
         </View>
     )
 }

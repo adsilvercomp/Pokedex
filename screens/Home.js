@@ -29,7 +29,7 @@ export default function Home({navigation}){
     const offsetScroll = () => {
       // Calculate the offset based on new data length:
       // new list length * item height - the height of 10 new items
-      const newOffset = (pokemonData.length + 10) * 100 - 1000;
+      const newOffset = (pokemonData.length + 10) * 110 - 1000;
       setContentOffset(newOffset);
     };
 
