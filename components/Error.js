@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import { FontBold, PokemonDarkBlue } from "../styles/styleVariables.json"
+import { FontBold, PokemonDarkBlue, cream } from "../styles/styleVariables.json"
 
 export default ErrorMessage = () => {
     return(
@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent:'center',
         alignItems:'center',
+        backgroundColor: cream
     },
     errorMessage: {
         fontFamily: FontBold,
