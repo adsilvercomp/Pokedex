@@ -26,8 +26,6 @@ export default function App(){
       console.error('Error fetching initial pokemon list data:', err.message);
       throw err; 
     }
-    
-    
   };
   
   // followup request to get info about each pokemon in initial request
