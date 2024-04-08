@@ -8,6 +8,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import DataContext from './DataContext';
 import { PokemonRed, FontBold, cream} from "./styles/styleVariables.json";
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function App(){
   const [pokemonData, setPokemonData] = useState(null)
@@ -16,29 +18,70 @@ export default function App(){
   const [next, setNext] = useState(null);
   const isInitialRender = useRef(true);
 
-  // code to fetch data
-  const getInitialData = async (url) => {
-    try{
-      const response = await axios.get(url);
-      return response;
-    }catch(err){
-      console.error('Error fetching initial pokemon list data:', err.message);
-      throw err; 
+
+
+  const writeToCache = async(key, value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem(key, jsonValue);
+    } catch (e) {
+      console.error(e)
+      throw err;
     }
-  };
+  }
+
+  const getCachedData = async(key) => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(key);
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      console.error(e)
+      throw err;
+    }
+  }
+
+
+  const queryCachedData= async(url) => {
+      // await AsyncStorage.clear();
+
+      console.log('query cached data has been hit')
+      if(!loading)setLoading(true);
   
-  // followup request to get info about each pokemon in initial request
-  const processUrls = async (data) => {
-    const urlPromises = data.map(async (pokemon) => {
+      const data = await getCachedData(url);
+      
+      if(data !== null){
+        addDataToState(data.data);
+        setNext(data.next);
+      }else{
+        fetchData(url);
+      }
+
+  }
+
+    // code to fetch data
+    const getInitialData = async (url) => {
       try{
-        response = await axios.get(pokemon?.url)
-        return response
+        const response = await axios.get(url);
+        return response;
       }catch(err){
-        console.error('Error fetching individual pokemon:', err.message);
+        console.error('Error fetching initial pokemon list data:', err.message);
         throw err; 
       }
+    };
+    
+    // followup request to get info about each pokemon in initial request
+    const processUrls = async (data) => {
+      const urlPromises = data.map(async (pokemon) => {
+        try{
+          response = await axios.get(pokemon?.url)
+          return response
+        }catch(err){
+          console.error('Error fetching individual pokemon:', err.message);
+          throw err; 
+        }
     });
-  
+    
+ 
     // return an array of promises to execute together
     try{
       const results = await Promise.all(urlPromises);
@@ -47,12 +90,21 @@ export default function App(){
       console.error('Error resolving individual promises:', err.message); // Log error details
       throw err; // Rethrow or return a special value to indicate failure
     }
-    
+
   };
+
+  const addDataToState = (newPokemonData) => {
+    if (pokemonData) {
+      setPokemonData([...pokemonData, ...newPokemonData]);
+    } else {
+      setPokemonData(newPokemonData);
+    }
+    setLoading(false);
+  }
+
   
   const fetchData = async (url) => {
-    if(!loading)setLoading(true);
-
+    console.log('hit');
     try {
       // get initial data
       const { data: initialData } = await getInitialData(url);
@@ -73,20 +125,15 @@ export default function App(){
         })
       });
 
-      if (pokemonData) {
-        setPokemonData([...pokemonData, ...filteredPokemon]);
-      } else {
-        setPokemonData(filteredPokemon);
-      }
-
+      await writeToCache(url, {data: filteredPokemon, next: initialData.next});
+      addDataToState(filteredPokemon);
+      
     } catch (error) {
       console.error('Error fetching data:', error.message);
       
       setError(true);
+      setLoading(false);
     }
-
-    setLoading(false);
-
   };
   
     // import custom fonts at top level 
@@ -104,7 +151,7 @@ export default function App(){
 
           if (isInitialRender.current) {
             isInitialRender.current = false;
-            fetchData('https://pokeapi.co/api/v2/pokemon/?limit=10');
+            queryCachedData('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=10')
           }
              
     },[])
@@ -121,7 +168,7 @@ export default function App(){
 
     return(
       <DataContext.Provider value={{pokemonData: pokemonData, 
-        fetchData:fetchData, 
+        queryCachedData: queryCachedData, 
         setLoading: setLoading, 
         loading: loading, 
         error: error, 

@@ -9,7 +9,7 @@ export default function Home({navigation}){
   const [contentOffset, setContentOffset] = useState(0);
   const [fetchReady, setFetchReady] = useState(true);
   
-  const {pokemonData, loading, error, fetchData, next, setLoading} = useContext(DataContext)
+  const {pokemonData, loading, error, queryCachedData, next, setLoading} = useContext(DataContext)
   
    useEffect(() => {
         // ensures that data is finished loading before next fetch is made
@@ -17,9 +17,11 @@ export default function Home({navigation}){
     },[pokemonData])
 
     const fetchMorePokemon = () => {
+        console.log('testing456');
+        console.log(next);
         disableScroll();
         offsetScroll();
-        if(next)fetchData(next);
+        if(next)queryCachedData(next);
     } 
 
     const getItemLayout = (data, index) => (
@@ -69,7 +71,7 @@ export default function Home({navigation}){
           {loading && <Loader/>}
         </View> 
       )
-      
+
     }
 }
 
