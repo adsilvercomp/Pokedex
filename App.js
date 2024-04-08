@@ -19,104 +19,113 @@ export default function App(){
   const isInitialRender = useRef(true);
 
 
-
+  // add to helperMethods
   const writeToCache = async(key, value) => {
     try {
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem(key, jsonValue);
-    } catch (e) {
-      console.error(e)
+      addDataToState(value.data);
+      
+    } catch (err) {
+      console.error('Error writing to cache:', err);
       throw err;
     }
   }
 
+  // add to helper methods
   const getCachedData = async(key) => {
     try {
       const jsonValue = await AsyncStorage.getItem(key);
       return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-      console.error(e)
+    } catch (err) {
+      console.error('Error reading data from cache:', err);
       throw err;
     }
   }
 
 
   const queryCachedData= async(url) => {
-      // await AsyncStorage.clear();
+      await AsyncStorage.clear();
 
-      console.log('query cached data has been hit')
       if(!loading)setLoading(true);
   
-      const data = await getCachedData(url);
+      const cachedData = await getCachedData(url);
       
-      if(data !== null){
-        addDataToState(data.data);
-        setNext(data.next);
+      if(cachedData !== null){
+        addDataToState(cachedData.data);
+        setNext(cachedData.next);
       }else{
-        fetchData(url);
+        getPokemonGroupData(url);
       }
 
   }
 
     // code to fetch data
-    const getInitialData = async (url) => {
+    const getPokemonGroupData = async (url) => {
       try{
         const response = await axios.get(url);
-        return response;
+        const {data} = response;
+        setNext(data.next);
+        getIndividualPokemonData(data.results, url, data.next);
       }catch(err){
-        console.error('Error fetching initial pokemon list data:', err.message);
+        console.error('Error fetching pokemon group data:', err.message);
+        throwError();
         throw err; 
       }
     };
     
     // followup request to get info about each pokemon in initial request
-    const processUrls = async (data) => {
-      const urlPromises = data.map(async (pokemon) => {
+    const getIndividualPokemonData = async (groupData, groupDataUrl, nextGroupUrl) => {
+      const urlPromises = groupData.map(async (pokemon) => {
         try{
           response = await axios.get(pokemon?.url)
           return response
         }catch(err){
           console.error('Error fetching individual pokemon:', err.message);
+          throwError();
           throw err; 
         }
     });
-    
- 
-    // return an array of promises to execute together
-    try{
-      const results = await Promise.all(urlPromises);
-      return results.filter(result => result !== null); ;
-    }catch(err) {
-      console.error('Error resolving individual promises:', err.message); // Log error details
-      throw err; // Rethrow or return a special value to indicate failure
-    }
+      try{
+        // return an array of promises to execute together
+        const results = await Promise.all(urlPromises);
+        const processedData = results.filter(result => result !== null); 
 
+        // processedData, groupDataUrl, nextGroupUrl
+        createNewPokemonListItems(processedData, groupDataUrl, nextGroupUrl);
+      }catch(err) {
+        console.error('Error resolving individual pokemon promises:', err.message); // Log error details\
+        throwError();
+        throw err; 
+      }
   };
+
+  const throwError = () => {
+    setError(true);
+    setLoading(false);
+  }
+
+  // add to helper methods
+  const cleanData = (data, newData) => {
+    // remove duplicate values
+    const filteredData = newData.filter((pokemon) =>  data.indexOf(pokemon) === -1)
+    return filteredData;
+  }
 
   const addDataToState = (newPokemonData) => {
     if (pokemonData) {
-      setPokemonData([...pokemonData, ...newPokemonData]);
+      const cleanNewPokemonData = cleanData(pokemonData, newPokemonData);
+      setPokemonData([...pokemonData, ...cleanNewPokemonData]);
     } else {
       setPokemonData(newPokemonData);
     }
     setLoading(false);
   }
+    
 
-  
-  const fetchData = async (url) => {
-    console.log('hit');
-    try {
-      // get initial data
-      const { data: initialData } = await getInitialData(url);
-
-      // set url for next set of pokemon to grab
-      setNext(initialData.next);
-
-      // get additional data for each of the pokemon returned in returned in initialData
-      const processedData = await processUrls(initialData.results);
-
-      // create an object for each of the pokemon that the flatList can consume
-      const filteredPokemon = processedData.map((pokemon) => {
+  const createNewPokemonListItems = async(processedData, url, next) => {
+        // create an object for each of the pokemon that the flatList can consume
+        const filteredPokemon = processedData.map((pokemon) => {
         return ({
           sprite: pokemon.data.sprites.front_default,
           name: pokemon.data.name,
@@ -124,18 +133,11 @@ export default function App(){
           id: pokemon.data.id,
         })
       });
-
-      await writeToCache(url, {data: filteredPokemon, next: initialData.next});
-      addDataToState(filteredPokemon);
-      
-    } catch (error) {
-      console.error('Error fetching data:', error.message);
-      
-      setError(true);
-      setLoading(false);
-    }
-  };
   
+      writeToCache(url, {data: filteredPokemon, next: next});
+  }
+
+
     // import custom fonts at top level 
     const [fontsLoaded] = useFonts({
         'ZenMaruGothicBold': require('./assets/fonts/ZenMaruGothic-Bold.ttf'),
