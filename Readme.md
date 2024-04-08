@@ -11,4 +11,4 @@ This app allows you to scroll through Pokemon and see background information abo
 - Run the command `npm install`, to install the project dependencies, and then `npm start` to start up the project
 - a qr code should appear in your terminal
 - scan the qr code with your phone camera, and click the link that pops up
-- This should automatically open the app in `expo client` 
+- This should automatically open the app in `expo client` on your phone
