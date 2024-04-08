@@ -1,10 +1,10 @@
 {
-    "PokemonDarkBlue": "#313233",
-    "PokemonRed": "#C53A36",
-    "lightBlue":"#c7e3f6",
-    "cream": "#ebe7d3",
-    "white": "#FFF",
-    "line": "#ccc7ab",
-    "Font": "ZenMaruGothicMedium",
-    "FontBold": "ZenMaruGothicBold"
+  "PokemonDarkBlue": "#313233",
+  "PokemonRed": "#C53A36",
+  "lightBlue": "#c7e3f6",
+  "cream": "#ebe7d3",
+  "white": "#FFF",
+  "line": "#ccc7ab",
+  "Font": "ZenMaruGothicMedium",
+  "FontBold": "ZenMaruGothicBold"
 }

@@ -1,8 +1,8 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import { lightBlue } from "../styles/styleVariables.json";
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { lightBlue } from '../styles/styleVariables.json';
 
-const App = () => (
+const Loader = () => (
   <View style={[styles.container, styles.horizontal]}>
     <ActivityIndicator size="large" color={lightBlue} />
   </View>
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center', // Center the ActivityIndicator horizontally
-    height:50
+    height: 50,
   },
   horizontal: {
     flexDirection: 'row',
@@ -21,4 +21,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default Loader;
