@@ -8,7 +8,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import DataContext from './DataContext';
 import { PokemonRed, FontBold, cream} from "./styles/styleVariables.json";
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import cleanData from './helperMethods/cleanData';
+import getCachedData from './helperMethods/getCachedData';
+import writeToCache from './helperMethods/writeToCache';
 
 
 export default function App(){
@@ -19,33 +21,10 @@ export default function App(){
   const isInitialRender = useRef(true);
 
 
-  // add to helperMethods
-  const writeToCache = async(key, value) => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem(key, jsonValue);
-      addDataToState(value.data);
-      
-    } catch (err) {
-      console.error('Error writing to cache:', err);
-      throw err;
-    }
-  }
 
-  // add to helper methods
-  const getCachedData = async(key) => {
-    try {
-      const jsonValue = await AsyncStorage.getItem(key);
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (err) {
-      console.error('Error reading data from cache:', err);
-      throw err;
-    }
-  }
-
-
+  // Check cache for data on load. If it doesn't exist get data from api
   const queryCachedData= async(url) => {
-      await AsyncStorage.clear();
+      // await AsyncStorage.clear();
 
       if(!loading)setLoading(true);
   
@@ -57,10 +36,9 @@ export default function App(){
       }else{
         getPokemonGroupData(url);
       }
-
   }
 
-    // code to fetch data
+    // code to fetch group of pokemon
     const getPokemonGroupData = async (url) => {
       try{
         const response = await axios.get(url);
@@ -74,7 +52,7 @@ export default function App(){
       }
     };
     
-    // followup request to get info about each pokemon in initial request
+    // follow up request to get info about each pokemon in initial request 
     const getIndividualPokemonData = async (groupData, groupDataUrl, nextGroupUrl) => {
       const urlPromises = groupData.map(async (pokemon) => {
         try{
@@ -100,18 +78,22 @@ export default function App(){
       }
   };
 
-  const throwError = () => {
-    setError(true);
-    setLoading(false);
+
+  // create an object for each of the pokemon that the flatList can consume
+  const createNewPokemonListItems = async(processedData, url, next) => {
+    const filteredPokemon = processedData.map((pokemon) => {
+    return ({
+      sprite: pokemon.data.sprites.front_default,
+      name: pokemon.data.name,
+      species: pokemon.data.species,
+      id: pokemon.data.id,
+    })
+  });
+
+    writeToCache(url, {data: filteredPokemon, next: next}, addDataToState);
   }
 
-  // add to helper methods
-  const cleanData = (data, newData) => {
-    // remove duplicate values
-    const filteredData = newData.filter((pokemon) =>  data.indexOf(pokemon) === -1)
-    return filteredData;
-  }
-
+  // add or append pokemon data to state for flatList to consume
   const addDataToState = (newPokemonData) => {
     if (pokemonData) {
       const cleanNewPokemonData = cleanData(pokemonData, newPokemonData);
@@ -121,22 +103,12 @@ export default function App(){
     }
     setLoading(false);
   }
-    
-
-  const createNewPokemonListItems = async(processedData, url, next) => {
-        // create an object for each of the pokemon that the flatList can consume
-        const filteredPokemon = processedData.map((pokemon) => {
-        return ({
-          sprite: pokemon.data.sprites.front_default,
-          name: pokemon.data.name,
-          species: pokemon.data.species,
-          id: pokemon.data.id,
-        })
-      });
   
-      writeToCache(url, {data: filteredPokemon, next: next});
+  // handle errors
+  const throwError = () => {
+    setError(true);
+    setLoading(false);
   }
-
 
     // import custom fonts at top level 
     const [fontsLoaded] = useFonts({
@@ -153,6 +125,7 @@ export default function App(){
 
           if (isInitialRender.current) {
             isInitialRender.current = false;
+            // get data on initial load
             queryCachedData('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=10')
           }
              
