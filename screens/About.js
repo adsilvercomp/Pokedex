@@ -4,7 +4,6 @@ import Loader from '../components/Loader';
 import useGet from '../customHooks/useGet';
 import ErrorMessage from '../components/Error';
 
-
 export default function About({ route }) {
   const { item } = route.params;
 
@@ -31,6 +30,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 });

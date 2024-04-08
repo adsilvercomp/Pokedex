@@ -77,7 +77,7 @@ export default function App() {
       console.error(
         'Error resolving individual pokemon promises:',
         err.message,
-      ); 
+      );
       throwError();
       throw err;
     }

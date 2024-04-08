@@ -32,7 +32,6 @@ const useGet = (url) => {
     if (!data) {
       queryCache();
     }
-  
   }, [url, data]);
   // data being returned from the custom hook
   return { data, isPending, error };
