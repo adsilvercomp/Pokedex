@@ -31,6 +31,7 @@ export default function App() {
 
     if (cachedData !== null) {
       addDataToState(cachedData.data);
+      // set url to query more data
       setNext(cachedData.next);
     } else {
       getPokemonGroupData(url);
@@ -42,6 +43,7 @@ export default function App() {
     try {
       const response = await axios.get(url);
       const { data } = response;
+      // set url to query more data
       setNext(data.next);
       getIndividualPokemonData(data.results, url, data.next);
     } catch (err) {
