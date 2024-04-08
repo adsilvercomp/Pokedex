@@ -22,6 +22,7 @@ export default function App() {
 
   // Check cache for data on load. If it doesn't exist get data from api
   const queryCachedData = async (url) => {
+    // commented out code to clear phone cache for testing purposes:
     // await AsyncStorage.clear();
 
     if (!loading) setLoading(true);
@@ -67,11 +68,10 @@ export default function App() {
       }
     });
     try {
-      // return an array of promises to execute together
+      // return an array of promises simultaneously
       const results = await Promise.all(urlPromises);
       const processedData = results.filter((result) => result !== null);
 
-      // processedData, groupDataUrl, nextGroupUrl
       createNewPokemonListItems(processedData, groupDataUrl, nextGroupUrl);
     } catch (err) {
       console.error(
@@ -101,6 +101,7 @@ export default function App() {
   // add or append pokemon data to state for flatList to consume
   const addDataToState = (newPokemonData) => {
     if (pokemonData) {
+      // make sure there are no redundant pieces of data
       const cleanNewPokemonData = cleanData(pokemonData, newPokemonData);
       setPokemonData([...pokemonData, ...cleanNewPokemonData]);
     } else {
