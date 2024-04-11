@@ -6,7 +6,6 @@ const getCachedData = async (key) => {
     return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch (err) {
     console.error('Error reading data from cache:', err);
-    throw err;
   }
 };
 

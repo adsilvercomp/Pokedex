@@ -11,7 +11,6 @@ import axios from 'axios';
 import cleanData from './helperMethods/cleanData';
 import getCachedData from './helperMethods/getCachedData';
 import writeToCache from './helperMethods/writeToCache';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
   const [pokemonData, setPokemonData] = useState(null);
@@ -22,9 +21,7 @@ export default function App() {
 
   // Check cache for data on load. If it doesn't exist get data from api
   const queryCachedData = async (url) => {
-    // commented out code to clear phone cache for testing purposes:
-    // await AsyncStorage.clear();
-
+  
     if (!loading) setLoading(true);
 
     const cachedData = await getCachedData(url);
@@ -49,7 +46,6 @@ export default function App() {
     } catch (err) {
       console.error('Error fetching pokemon group data:', err.message);
       throwError();
-      throw err;
     }
   };
 
@@ -59,14 +55,12 @@ export default function App() {
     groupDataUrl,
     nextGroupUrl,
   ) => {
-    const urlPromises = groupData.map(async (pokemon) => {
+    const urlPromises = groupData.map((pokemon) => {
       try {
-        response = await axios.get(pokemon?.url);
-        return response;
+        return axios.get(pokemon?.url);
       } catch (err) {
         console.error('Error fetching individual pokemon:', err.message);
         throwError();
-        throw err;
       }
     });
     try {
@@ -81,12 +75,11 @@ export default function App() {
         err.message,
       );
       throwError();
-      throw err;
     }
   };
 
   // create an object for each of the pokemon that the flatList can consume
-  const createNewPokemonListItems = async (processedData, url, next) => {
+  const createNewPokemonListItems = (processedData, url, next) => {
     const filteredPokemon = processedData.map((pokemon) => {
       return {
         sprite: pokemon.data.sprites.front_default,

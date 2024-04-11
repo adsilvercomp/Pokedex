@@ -7,7 +7,6 @@ const writeToCache = async (key, value, addDataToState) => {
     addDataToState(value.data);
   } catch (err) {
     console.error('Error writing to cache:', err);
-    throw err;
   }
 };
 
